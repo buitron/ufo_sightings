@@ -58,4 +58,5 @@ You can handle this... Right? The planet Earth needs to know what we have found!
 ![img](./htaccess/img/top_sample.png)
 ![img](./htaccess/img/bottom_sample.png)
 
+# [Click Here to test out the Live Page2](https://buitron.github.io/ufo_sightings/htaccess/)
 # [Click Here to test out the Live Page](./htaccess/)
