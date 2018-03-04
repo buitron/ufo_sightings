@@ -55,6 +55,7 @@ You can handle this... Right? The planet Earth needs to know what we have found!
 # Solution
 
 ## Sample Page
-**insert image here**
+![img](./htaccess/img/top_sample.png)
+![img](./htaccess/img/bottom_sample.png)
 
 # [Click Here to test out the Live Page](./htaccess/)

@@ -58,20 +58,63 @@ d3.select('button').on('click', function (event){
     var shapeSelect = d3.select('#shapeID').node().value;
 
     // build table
-    renderTable(dateSelect, citySelect, stateSelect, countrySelect, shapeSelect, filter);
-
+    var selected  = renderTable(dateSelect, citySelect, stateSelect, countrySelect, shapeSelect, filter);
 
     // pagination
-    pagination();
+    var pages = pagination(selected);
+    d3.select('#step1')
+        .classed('select', true);
 
 
+    var counter = 0;
+    for (let i=0; i<10; i++){
+        $tBodyRow = $tBody.append('tr');
+        for (let j=0; j<7; j++){
+            $tBodyRow.append('td').html(selected[counter]);
+            counter++;
+        }
+    }
 
-    // d3.selectAll('td')
-    //     .each(function(d, i) {
-    //       console.log(d.source);
-    //     });
-    console.log(d3.selectAll('td').html())
-    console.log(d3.selectAll("tr").size() - 1)
+
+    // select button and render the table
+    for (let i=0; i<Math.ceil(pages); i++){
+        d3.select('#step' + (i + 1)).on('click', function(){
+            // clear table table body if it already exists
+            if (!$tBody.empty()){
+                $tBody.html('');
+            }
+
+            d3.selectAll('.paginate')
+                .classed('select', false);
+
+            d3.select('#step' + (i + 1))
+                .classed('select', true);
+
+
+            var counter = (1 * (i*70));
+            for (let j=0; j<10; j++){
+                $tBodyRow = $tBody.append('tr');
+                for (let k=0; k<7; k++){
+                    $tBodyRow.append('td').html(selected[counter]);
+                    counter++;
+                }
+            }
+        });
+    }
+
+    // var down = 0;
+
+    // d3.select('#forward').on('click', function(){
+    //     down++
+    //     document.getElementById('step' + down).click()
+    // });
+
+    // d3.select('#forward').on('click', function(){
+    //     down--
+    //     document.getElementById('step' + down).click()
+    // });
+
+
 
 
 });

@@ -1,17 +1,18 @@
-function pagination(){
-    $div2.html('')
+function pagination(totalOutput){
+    $div2.html('');
 
-    var pages = (d3.selectAll("tr").size() - 1)/10;
+    // var pages = (d3.selectAll("tr").size() - 1)/10;
+    var pages = (totalOutput.length/7)/10;
 
     if (pages > 1) {
 
         // back arrow
-        $div2
-        .append('button')
-        .append('span')
-            .attr('id', 'back')
-            .attr('class', 'paginate')
-                .html('&laquo;');
+        // $div2
+        // .append('button')
+        // .append('span')
+        //     .attr('id', 'back')
+        //     .attr('class', 'paginate')
+        //         .html('&laquo;');
 
         // in-between number selections
         for (let i=0; i<pages; i++){
@@ -24,13 +25,15 @@ function pagination(){
         }
 
         // forward arrow
-        $div2
-        .append('button')
-        .append('span')
-            .attr('id', 'forward')
-            .attr('class', 'paginate')
-                .html('&raquo;');
+        // $div2
+        // .append('button')
+        // .append('span')
+        //     .attr('id', 'forward')
+        //     .attr('class', 'paginate')
+        //         .html('&raquo;');
     }
+
+    return (pages);
 }
 
 
@@ -56,20 +59,20 @@ function formatData(inDate, inCity, inState, inCountry, inShape, data){
     var pct = moment.tz(inDate, "America/Los_Angeles");
     var gmt = pct.clone().tz("Europe/Dublin").format();
 
-    var dt_from = new Date(gmt)
-    var dt_to = new Date(data[j].datetime)
+    var dt_from = new Date(gmt);
+    var dt_to = new Date(data[j].datetime);
 
-    var city_from = inCity.toLowerCase()
-    var city_to = data[j].city.toLowerCase()
+    var city_from = inCity.toLowerCase();
+    var city_to = data[j].city.toLowerCase();
 
-    var state_from = inState.toLowerCase()
-    var state_to = data[j].state.toLowerCase()
+    var state_from = inState.toLowerCase();
+    var state_to = data[j].state.toLowerCase();
 
-    var country_from = inCountry.toLowerCase()
-    var country_to = data[j].country.toLowerCase()
+    var country_from = inCountry.toLowerCase();
+    var country_to = data[j].country.toLowerCase();
 
-    var shape_from = inShape.toLowerCase()
-    var shape_to = data[j].shape.toLowerCase()
+    var shape_from = inShape.toLowerCase();
+    var shape_to = data[j].shape.toLowerCase();
 
     return {
         dateSelect : dt_from,
@@ -90,16 +93,17 @@ function formatData(inDate, inCity, inState, inCountry, inShape, data){
 }
 
 
-function populate(data){
-    $tBodyRow = $tBody.append('tr');
+function populate(data, td){
+    // $tBodyRow = $tBody.append('tr');
 
     var data = data[j];
     var fields = Object.keys(data);
     for (k=0; k<fields.length; k++){
-        var field = fields[k]
+        var field = fields[k];
         var insert = data[field];
+        td.push(insert);
 
-        $tBodyRow.append('td').html(insert)
+        // $tBodyRow.append('td').html(insert)
 
     }
 }
@@ -108,13 +112,14 @@ function populate(data){
 function filter(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape, ufoData){
 
     var ufoData = dataSet;
+    var td = [];
 
     if (chosenDate && chosenCity && chosenState && chosenCountry && chosenShape){
         for (j=0; j<ufoData.length; j++){
             let result = formatData(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape, ufoData)
 
             if (result.dateSelect.getTime() === result.dateData.getTime() && result.citySelect == result.cityData && result.stateSelect == result.stateData && result.countrySelect == result.countryData && result.shapeSelect == result.shapeData){
-                populate(ufoData)
+                populate(ufoData, td)
 
             }
         }
@@ -123,7 +128,7 @@ function filter(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape,
             let result = formatData(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape, ufoData)
 
             if (result.dateSelect.getTime() === result.dateData.getTime() && result.citySelect == result.cityData && result.stateSelect == result.stateData && result.countrySelect == result.countryData){
-                populate(ufoData)
+                populate(ufoData, td)
 
             }
         }
@@ -132,7 +137,7 @@ function filter(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape,
             let result = formatData(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape, ufoData)
 
             if (result.dateSelect.getTime() === result.dateData.getTime() && result.citySelect == result.cityData && result.stateSelect == result.stateData && result.shapeSelect == result.shapeData){
-                populate(ufoData)
+                populate(ufoData, td)
 
             }
         }
@@ -141,7 +146,7 @@ function filter(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape,
             let result = formatData(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape, ufoData)
 
             if (result.dateSelect.getTime() === result.dateData.getTime() && result.citySelect == result.cityData && result.countrySelect == result.countryData && result.shapeSelect == result.shapeData){
-                populate(ufoData)
+                populate(ufoData, td)
 
             }
         }
@@ -150,7 +155,7 @@ function filter(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape,
             let result = formatData(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape, ufoData)
 
             if (result.dateSelect.getTime() === result.dateData.getTime() && result.stateSelect == result.stateData && result.countrySelect == result.countryData && result.shapeSelect == result.shapeData){
-                populate(ufoData)
+                populate(ufoData, td)
 
             }
         }
@@ -159,7 +164,7 @@ function filter(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape,
             let result = formatData(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape, ufoData)
 
             if (result.citySelect == result.cityData && result.stateSelect == result.stateData && result.countrySelect == result.countryData && result.shapeSelect == result.shapeData){
-                populate(ufoData)
+                populate(ufoData, td)
 
             }
         }
@@ -168,7 +173,7 @@ function filter(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape,
             let result = formatData(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape, ufoData)
 
             if (result.dateSelect.getTime() === result.dateData.getTime() && result.citySelect == result.cityData && result.stateSelect == result.stateData){
-                populate(ufoData)
+                populate(ufoData, td)
 
             }
         }
@@ -177,7 +182,7 @@ function filter(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape,
             let result = formatData(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape, ufoData)
 
             if (result.dateSelect.getTime() === result.dateData.getTime() && result.citySelect == result.cityData && result.countrySelect == result.countryData){
-                populate(ufoData)
+                populate(ufoData, td)
 
             }
         }
@@ -186,7 +191,7 @@ function filter(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape,
             let result = formatData(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape, ufoData)
 
             if (result.dateSelect.getTime() === result.dateData.getTime() && result.stateSelect == result.stateData && result.countrySelect == result.countryData){
-                populate(ufoData)
+                populate(ufoData, td)
 
             }
         }
@@ -195,7 +200,7 @@ function filter(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape,
             let result = formatData(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape, ufoData)
 
             if (result.citySelect == result.cityData && result.stateSelect == result.stateData && result.countrySelect == result.countryData){
-                populate(ufoData)
+                populate(ufoData, td)
 
             }
         }
@@ -204,7 +209,7 @@ function filter(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape,
             let result = formatData(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape, ufoData)
 
             if (result.dateSelect.getTime() === result.dateData.getTime() && result.citySelect == result.cityData && result.shapeSelect == result.shapeData){
-                populate(ufoData)
+                populate(ufoData, td)
 
             }
         }
@@ -213,7 +218,7 @@ function filter(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape,
             let result = formatData(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape, ufoData)
 
             if (result.dateSelect.getTime() === result.dateData.getTime() && result.stateSelect == result.stateData && result.shapeSelect == result.shapeData){
-                populate(ufoData)
+                populate(ufoData, td)
 
             }
         }
@@ -222,7 +227,7 @@ function filter(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape,
             let result = formatData(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape, ufoData)
 
             if (result.citySelect == result.cityData && result.stateSelect == result.stateData && result.shapeSelect == result.shapeData){
-                populate(ufoData)
+                populate(ufoData, td)
 
             }
         }
@@ -231,7 +236,7 @@ function filter(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape,
             let result = formatData(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape, ufoData)
 
             if (result.dateSelect.getTime() === result.dateData.getTime() && result.countrySelect == result.countryData && result.shapeSelect == result.shapeData){
-                populate(ufoData)
+                populate(ufoData, td)
 
             }
         }
@@ -240,7 +245,7 @@ function filter(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape,
             let result = formatData(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape, ufoData)
 
             if (result.citySelect === result.cityData && result.countrySelect == result.countryData && result.shapeSelect == result.shapeData){
-                populate(ufoData)
+                populate(ufoData, td)
 
             }
         }
@@ -249,7 +254,7 @@ function filter(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape,
             let result = formatData(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape, ufoData)
 
             if (result.stateSelect === result.stateData && result.countrySelect == result.countryData && result.shapeSelect == result.shapeData){
-                populate(ufoData)
+                populate(ufoData, td)
 
             }
         }
@@ -258,7 +263,7 @@ function filter(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape,
             let result = formatData(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape, ufoData)
 
             if (result.dateSelect.getTime() === result.dateData.getTime() && result.citySelect == result.cityData){
-                populate(ufoData)
+                populate(ufoData, td)
 
             }
         }
@@ -267,7 +272,7 @@ function filter(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape,
             let result = formatData(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape, ufoData)
 
             if (result.dateSelect.getTime() === result.dateData.getTime() && result.stateSelect == result.stateData){
-                populate(ufoData)
+                populate(ufoData, td)
 
             }
         }
@@ -276,7 +281,7 @@ function filter(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape,
             let result = formatData(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape, ufoData)
 
             if (result.citySelect == result.cityData && result.stateSelect == result.stateData){
-                populate(ufoData)
+                populate(ufoData, td)
 
             }
         }
@@ -285,7 +290,7 @@ function filter(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape,
             let result = formatData(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape, ufoData)
 
             if (result.dateSelect.getTime() === result.dateData.getTime() && result.shapeSelect == result.shapeData){
-                populate(ufoData)
+                populate(ufoData, td)
 
             }
         }
@@ -294,7 +299,7 @@ function filter(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape,
             let result = formatData(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape, ufoData)
 
             if (result.citySelect == result.cityData && result.shapeSelect == result.shapeData){
-                populate(ufoData)
+                populate(ufoData, td)
 
             }
         }
@@ -303,7 +308,7 @@ function filter(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape,
             let result = formatData(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape, ufoData)
 
             if (result.countrySelect == result.countryData && result.shapeSelect == result.shapeData){
-                populate(ufoData)
+                populate(ufoData, td)
 
             }
         }
@@ -312,7 +317,7 @@ function filter(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape,
             let result = formatData(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape, ufoData)
 
             if (result.stateSelect == result.stateData && result.countrySelect == result.countryData){
-                populate(ufoData)
+                populate(ufoData, td)
 
             }
         }
@@ -321,7 +326,7 @@ function filter(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape,
             let result = formatData(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape, ufoData)
 
             if (result.stateSelect == result.stateData && result.shapeSelect == result.shapeData){
-                populate(ufoData)
+                populate(ufoData, td)
 
             }
         }
@@ -330,7 +335,7 @@ function filter(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape,
             let result = formatData(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape, ufoData)
 
             if (result.countrySelect == result.countryData && result.shapeSelect == result.shapeData){
-                populate(ufoData)
+                populate(ufoData, td)
 
             }
         }
@@ -339,7 +344,7 @@ function filter(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape,
             let result = formatData(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape, ufoData)
 
             if (result.dateSelect.getTime() === result.dateData.getTime() && result.countrySelect == result.countryData){
-                populate(ufoData)
+                populate(ufoData, td)
 
             }
         }
@@ -348,7 +353,7 @@ function filter(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape,
             let result = formatData(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape, ufoData)
 
             if (result.citySelect == result.cityData && result.countrySelect == result.countryData){
-                populate(ufoData)
+                populate(ufoData, td)
 
             }
         }
@@ -357,9 +362,10 @@ function filter(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape,
             let result = formatData(chosenDate, chosenCity, chosenState, chosenCountry, chosenShape, ufoData)
 
             if (result.dateSelect.getTime() === result.dateData.getTime() || result.citySelect == result.cityData || result.stateSelect == result.stateData || result.countrySelect == result.countryData || result.shapeSelect == result.shapeData){
-                populate(ufoData)
+                populate(ufoData, td)
 
             }
         }
     }
+    return (td);
 }
